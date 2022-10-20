@@ -1,0 +1,32 @@
+Wasserstein GAN with Gradient Penalty
+WGAN uses weight clipping to achieve the 1-Lipschitz function, which can lead to
+outlier values of surface and capacity underutilization, and gradient vanishing if the
+weight clipping parameters are not carefully tuned. Doing so can lead to undesirable
+behavior.
+The Gradient Penalty is a light version of the Lipschitz constraint that follows from the
+fact that functions are 1-Lipschitz if and only if the gradients are everywhere in the
+norm at most 1. The square of the difference from the norm of 1 is used as the gradient
+penalty.
+WGAN-GP changes weight trimming by limiting to the gradient norm of the critic to
+impose Lipschitz continuity. This permits for more stable network training than WGAN
+and needs very small hyper-parameter tuning.
+The primary advantage of WGAN-GP is its convergence. It facilitates training and is
+therefore stable during training. Because WGAN-GP helps models converge better.
+
+F/SOP FYDP/09/00
+54
+Gradient Penalty
+The idea of Gradient Penalty is to enforce the constraint such that the gradients of the
+critic’s output w.r.t the inputs to have unit norm. A soft version of this constraint with
+a penalty on gradient norm on the samples x̂ ∈ ℙx̂. So the new objective is
+L = Ex̄~Pg [f(x̄)] - Ex~Pr [f(x)] + λ E𝑥̂~P𝑥̂ [(||∇𝑥̂f(𝑥̂~)||2-1)2
+]
+In this equation the terms to the left of the sum is original critic loss and the term to the
+right of the sum is gradient penalty.
+ℙx̂ is distribution that is obtained by uniformly sampling along straight line between
+the real and the generated distributions ℙr and ℙg. This is done because optimal critic
+has the straight lines with the unit gradient norm between samples coupled from ℙr and
+ℙg.
+λ is the penalty coefficient and that is used to weight the gradient penalty term.
+Batch Normalization is not used in the critic anymore because batch norm maps a batch
+of inputs to the batch of outputs
